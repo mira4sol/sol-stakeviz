@@ -1,9 +1,0 @@
-{
-  "buildCommand": "npm run build",
-  "crons": [
-    {
-      "path": "/api/cron/update-validators",
-      "schedule": "* * * * *"
-    }
-  ]
-}
