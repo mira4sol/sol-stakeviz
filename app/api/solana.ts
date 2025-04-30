@@ -1,4 +1,5 @@
-import { Validator } from '@/types/schema'
+import { TrendsService } from '@/lib/services/trends.service'
+import { StakingHistory, Validator } from '@/types/schema'
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { storage } from './storage'
 // Cache refresh intervals (in ms)
@@ -400,19 +401,18 @@ async function updateStakingHistory(validators: Omit<Validator, 'id'>[]) {
         avgApy: avgApy.toString(),
         stakeRatio: stakeRatio.toString(),
       }
+      await TrendsService.insertTrend(historyEntry)
 
-      console.log('historyEntry', historyEntry)
-      // const localHistory = loadStakingHistoryFromFile() || []
-
-      // for (const h of localHistory) {
-      //   await storage.saveStakingHistory({
-      //     activeValidators: h.activeValidators,
-      //     avgApy: h.avgApy,
-      //     date: h.date,
-      //     stakeRatio: h.stakeRatio,
-      //     totalStaked: h.totalStaked,
-      //   })
-      // }
+      const getAllTrendsReq = await TrendsService.getAllTrends()
+      if (getAllTrendsReq.success) {
+        const data = (getAllTrendsReq.data?.data || []) as StakingHistory[]
+        for (const trend of data) {
+          await storage.saveStakingHistory({
+            ...trend,
+            date: new Date(trend.date),
+          })
+        }
+      }
 
       await storage.saveStakingHistory(historyEntry)
 
@@ -449,7 +449,25 @@ export async function getStakingHistory() {
     }
 
     // Get from database
-    const history = await storage.getStakingHistory()
+    let history = await storage.getStakingHistory()
+    if (!history.length) {
+      const getAllTrendsReq = await TrendsService.getAllTrends()
+      if (getAllTrendsReq.success) {
+        const data = (
+          (getAllTrendsReq.data?.data || []) as StakingHistory[]
+        ).map((trend) => ({
+          ...trend,
+          date: new Date(trend.date),
+        }))
+        history = data
+        //   for (const trend of data) {
+        //     await storage.saveStakingHistory({
+        //       ...trend,
+        //       date: new Date(trend.date),
+        //     })
+        //   }
+      }
+    }
 
     // Update in-memory cache
     apiCache.stakingHistory = history

@@ -33,7 +33,7 @@ Solana's public RPC endpoints are rate-limited to prevent abuse and ensure fair 
 +-------------------+        +-------------------+        +-------------------+
          |                           |                              |
          |   Fetches cached data     |   Periodically fetches       |
-         |   (every 30s–5min)        |   fresh data (every 1–5min)  |
+         |   (every 30s–1min)        |   fresh data (every 30s–1min)  |
          |-------------------------->|----------------------------->|
          |                           |                              |
          |   Receives fast,          |   Caches and aggregates      |

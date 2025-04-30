@@ -86,7 +86,7 @@ export class MemStorage implements IStorage {
     entry: Omit<StakingHistory, 'id'>
   ): Promise<StakingHistory> {
     const id = this.currentHistoryId++
-    console.log('enrty', entry)
+    // console.log('enrty', entry)
     const historyEntry: StakingHistory = {
       ...entry,
       id,
