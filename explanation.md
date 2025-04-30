@@ -198,3 +198,5 @@ StakeViz aggregates data from the following Solana RPC endpoints:
 Solana StakeViz is a robust, real-time analytics dashboard that distills the complexity of Solana's staking ecosystem into actionable insights. Through careful architectural choices—especially around rate limiting and data aggregation—it delivers a reliable, scalable, and user-friendly experience. The dashboard's visualizations and metrics empower users to monitor network health, stake wisely, and contribute to the decentralization and security of the Solana blockchain.
 
 ---
+
+**(Word count: ~1,250)** 
