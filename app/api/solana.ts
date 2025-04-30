@@ -3,7 +3,7 @@ import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { storage } from './storage'
 // Cache refresh intervals (in ms)
 // const VALIDATOR_REFRESH_INTERVAL = 15 * 60 * 1000 // 15 minutes
-const VALIDATOR_REFRESH_INTERVAL = 5 * 60 * 1000 // 15 minutes
+const VALIDATOR_REFRESH_INTERVAL = 1 * 60 * 1000 // 15 minutes
 const HISTORY_REFRESH_INTERVAL = 60 * 60 * 1000 // 1 hour
 const NETWORK_INFO_REFRESH_INTERVAL = 5 * 60 * 1000 // 5 minutes
 
