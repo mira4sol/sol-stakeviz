@@ -143,7 +143,7 @@ export default function StakingCalculator() {
           </div>
 
           <Button
-            className='mt-2 w-full bg-sol-primary hover:bg-opacity-90 text-white'
+            className='mt-2 w-full bg-primary hover:bg-opacity-90 text-white'
             onClick={handleCalculate}
             disabled={calculator.isPending}
           >

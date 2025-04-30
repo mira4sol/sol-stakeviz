@@ -193,9 +193,7 @@ export default function NetworkStatsCards() {
                   />
                 </svg>
                 <span>+{validatorsChange}</span>
-                <span className='text-sol-text-secondary ml-1'>
-                  new this epoch
-                </span>
+                <span className='text-sol-text-secondary ml-1'>this epoch</span>
               </p>
             </div>
           </div>

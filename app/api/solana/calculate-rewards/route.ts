@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-export const GET = async (req: Request) => {
+export const POST = async (req: Request) => {
   try {
     const { amount, commission, days } = await req.json()
 
