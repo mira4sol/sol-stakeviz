@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Solana StakeViz
 
-## Getting Started
+A real-time dashboard for visualizing and understanding the health of Solana's staking ecosystem.
 
-First, run the development server:
+---
+
+## 🚀 Live Demo
+
+[https://sol-stakeviz.vercel.app/](https://sol-stakeviz.vercel.app/)
+
+---
+
+## 🌟 Overview
+
+Solana StakeViz is a powerful, user-friendly dashboard that makes it easy to monitor, analyze, and understand Solana's staking network. Whether you're a new staker, a validator, or a researcher, StakeViz provides instant insights into stake distribution, validator performance, and network participation—all in a visually engaging interface.
+
+---
+
+## ✨ Features
+
+- **Real-Time Analytics:** Up-to-date data on stake distribution, validator stats, and network health.
+- **Interactive Visualizations:** Line, bar, and doughnut charts for trends and distributions.
+- **Staking Calculator:** Simulate rewards, compounding, and validator commission scenarios.
+- **Network Health Indicators:** Quick stats and progress bars for decentralization, performance, and security.
+- **FAQ & Education:** Built-in explanations and disclaimers for all users.
+
+---
+
+## 📊 Key Metrics
+
+- **Total Staked SOL**
+- **Staking Ratio**
+- **Active Validators**
+- **Average APY**
+- **Stake Distribution (Top 20, Nakamoto Coefficient)**
+- **Network Participation**
+- **Validator Diversity, Voting Performance, Uptime, Commission Fairness**
+
+---
+
+## 🛠️ Getting Started
+
+Clone the repo and install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗️ Architecture
 
-## Learn More
+- **Frontend:** Next.js (App Router), React, Tailwind CSS, Chart.js
+- **Backend:** Next.js API routes (serverless), Solana Web3.js, in-memory and optional Supabase caching
+- **Data Sources:**
+  - Solana RPC endpoints (`getVoteAccounts`, `getEpochInfo`, `getSupply`, etc.)
+  - Hourly staking history aggregation
+- **Smart Caching:** Periodic server-side fetches to avoid RPC rate limits
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 Resources & Attribution
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Solana Staking Docs](https://solana.com/staking)
+- [Solana RPC Endpoints](https://docs.solana.com/cluster/rpc-endpoints)
+- [Solana Explorer Source](https://github.com/solana-foundation/explorer)
+- [Validators.app](https://www.validators.app/)
+- [Marinade Finance Docs](https://docs.marinade.finance/)
+- [Staking Rewards Calculator](https://www.stakingrewards.com/earn/solana/)
 
-## Deploy on Vercel
+This project uses open-source components with proper attribution. See code comments for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Contributing
+
+Pull requests and issues are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙏 Acknowledgements
+
+Thanks to @heliuslabs, @thenebulanode, and @SuperteamEarn for supporting the Solana ecosystem and the [REDACTED] Hackathon.
