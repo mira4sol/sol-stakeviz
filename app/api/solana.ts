@@ -460,12 +460,6 @@ export async function getStakingHistory() {
           date: new Date(trend.date),
         }))
         history = data
-        //   for (const trend of data) {
-        //     await storage.saveStakingHistory({
-        //       ...trend,
-        //       date: new Date(trend.date),
-        //     })
-        //   }
       }
     }
 

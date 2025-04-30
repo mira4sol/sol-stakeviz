@@ -23,7 +23,8 @@ Solana's public RPC endpoints are rate-limited to prevent abuse and ensure fair 
 - **Initial Approach:** The project began with a React frontend and an Express backend, using WebSockets for real-time updates. However, WebSockets generated excessive traffic, quickly hitting the RPC rate limits.
 - **Refined Approach:** The architecture was refactored to use a server (later, Next.js API routes) as a data aggregator and cache. Instead of every user querying the Solana RPC, the server fetches and caches data at controlled intervals (every 1–5 minutes), storing it in memory (and optionally in a lightweight database for persistence).
 - **Client Requests:** When a user accesses the dashboard, the frontend fetches data from the server's cache, not directly from the RPC. This dramatically reduces the number of RPC calls and ensures compliance with rate limits.
-
+- **Staking Trends Aggregation:** I aggregate staking history from data base by hourly and stored using supabase for easy query, so we can see the trends of validators by hourly
+- 
 **Diagram: Data Flow and Caching**
 
 ```
@@ -42,7 +43,7 @@ Solana's public RPC endpoints are rate-limited to prevent abuse and ensure fair 
 ```
 
 **Why Not WebSockets?**  
-WebSockets are ideal for high-frequency, low-latency updates, but in the context of Solana's rate-limited RPC, they are overkill and counterproductive. A simple `setInterval` on the server, combined with in-memory caching, achieves near real-time updates without overwhelming the RPC.
+WebSockets are ideal for high-frequency, low-latency updates, but in the context of Solana's rate-limited RPC, they are overkill and counterproductive as you hit rate limits (Tho can be overcomed with paid RPC's like helius). A simple `setInterval` on the server, combined with in-memory caching, achieves near real-time updates without overwhelming the RPC.
 
 **References:**
 - [Solana RPC Rate Limits](https://docs.solana.com/cluster/rpc-endpoints)
@@ -196,5 +197,61 @@ StakeViz aggregates data from the following Solana RPC endpoints:
 ## 7. Conclusion
 
 Solana StakeViz is a robust, real-time analytics dashboard that distills the complexity of Solana's staking ecosystem into actionable insights. Through careful architectural choices—especially around rate limiting and data aggregation—it delivers a reliable, scalable, and user-friendly experience. The dashboard's visualizations and metrics empower users to monitor network health, stake wisely, and contribute to the decentralization and security of the Solana blockchain.
+
+---
+
+## 8. Staking Calculator: Interactive Reward Simulation
+
+### Overview
+
+The **Staking Calculator** is an interactive tool that empowers users to estimate their potential staking rewards on the Solana network. By adjusting parameters such as stake amount, validator commission, time period, and compounding strategy, users can model different scenarios and make informed decisions about their staking strategy.
+
+### Key Features
+
+- **User Inputs:**
+  - **Amount to Stake (SOL):** The principal amount the user wishes to stake.
+  - **Validator Commission (0–10%):** The commission fee set by the validator.
+  - **Time Period:** Options from 30 days up to 3 years.
+  - **Compounding Frequency:** None, yearly, quarterly, monthly, or daily.
+  - **Advanced Options:** Lockup period, unstake fee, reinvestment threshold, APY trend (stable, increasing, decreasing, volatile).
+
+- **Reward Calculation:**
+  - Utilizes both client-side logic and a backend API (via the `useAPYCalculator` hook) to estimate APY and rewards.
+  - Simulates compounding based on the selected frequency.
+  - Models advanced scenarios such as lockup periods (no rewards during lockup), fluctuating APY, and reinvestment thresholds.
+
+- **Results Visualization:**
+  - Displays estimated APY, total rewards, final balance, ROI, and annual/monthly breakdowns.
+  - Visualizes monthly rewards as a bar chart.
+  - Provides a risk assessment based on user parameters.
+  - Includes FAQ and disclaimers for user education.
+
+### Example Calculation Logic
+
+- **Compounding (Daily):**
+  ```js
+  for (let day = 1; day <= totalDays; day++) {
+    dailyReward = currentAmount * (APY / 365 / 100);
+    currentAmount += dailyReward;
+  }
+  ```
+- **ROI:**
+  ```js
+  ROI = (TotalRewards / InitialAmount) * 100;
+  ```
+- **Risk Assessment:**
+  - Based on commission, time period, compounding, lockup, APY trend, etc.
+  - Categorized as Low, Medium, or High.
+
+### User Experience
+
+- The calculator is accessible from the main dashboard and provides instant feedback as users adjust parameters.
+- Advanced options allow power users to model more complex scenarios.
+- The FAQ and disclaimers help educate users about staking risks and tax implications.
+
+### Integration with the Dashboard
+
+- The calculator uses the same backend API and hooks as the analytics dashboard, ensuring consistency in APY and network data.
+- It complements the analytics dashboard by helping users turn insights into actionable staking plans.
 
 ---
