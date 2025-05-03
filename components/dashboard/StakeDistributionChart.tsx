@@ -1,3 +1,5 @@
+'use client'
+
 import { Card } from '@/components/ui/card'
 import {
   Select,
@@ -35,83 +37,94 @@ export default function StakeDistributionChart() {
 
     // Destroy previous chart if it exists
     if (chartInstance.current) {
-      chartInstance.current.destroy()
+      // chartInstance.current.destroy()
     }
 
     // Create new chart
     const ctx = chartRef.current.getContext('2d')
     if (!ctx) return
 
-    chartInstance.current = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels.slice(0, count),
-        datasets: [
-          {
-            label: 'Stake Amount (SOL)',
-            data: data.slice(0, count),
-            backgroundColor: '#5E5BF9',
-            borderColor: '#5E5BF9',
-            borderWidth: 1,
-            borderRadius: 4,
-            barPercentage: 0.7,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(255, 255, 255, 0.05)',
+    if (!chartInstance.current)
+      chartInstance.current = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels.slice(0, count),
+          datasets: [
+            {
+              label: 'Stake Amount (SOL)',
+              data: data.slice(0, count),
+              backgroundColor: '#5E5BF9',
+              borderColor: '#5E5BF9',
+              borderWidth: 1,
+              borderRadius: 4,
+              barPercentage: 0.7,
             },
-            ticks: {
-              color: '#9CA3AF',
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)',
+              },
+              ticks: {
+                color: '#9CA3AF',
+              },
+            },
+            x: {
+              grid: {
+                display: false,
+              },
+              ticks: {
+                color: '#9CA3AF',
+                maxRotation: 0,
+                autoSkip: true,
+                maxTicksLimit: 10,
+              },
             },
           },
-          x: {
-            grid: {
+          plugins: {
+            legend: {
               display: false,
             },
-            ticks: {
-              color: '#9CA3AF',
-              maxRotation: 0,
-              autoSkip: true,
-              maxTicksLimit: 10,
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            backgroundColor: '#21273A',
-            titleColor: '#E9ECEF',
-            bodyColor: '#E9ECEF',
-            borderColor: '#2D3748',
-            borderWidth: 1,
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-              title: function (tooltipItems) {
-                // return `Validator ${tooltipItems[0].dataIndex + 1}`
-                return toolTips?.[tooltipItems[0].dataIndex] || ''
-              },
-              label: function (context) {
-                return `Stake: ${context.parsed.y}M SOL`
+            tooltip: {
+              backgroundColor: '#21273A',
+              titleColor: '#E9ECEF',
+              bodyColor: '#E9ECEF',
+              borderColor: '#2D3748',
+              borderWidth: 1,
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                title: function (tooltipItems) {
+                  // return `Validator ${tooltipItems[0].dataIndex + 1}`
+                  return toolTips?.[tooltipItems[0].dataIndex] || ''
+                },
+                label: function (context) {
+                  return `Stake: ${context.parsed.y}M SOL`
+                },
               },
             },
           },
         },
-      },
-    })
+      })
+    else {
+      chartInstance.current.data.labels = labels.slice(0, count)
+      chartInstance.current.data.datasets[0].data = data.slice(0, count)
+      if (chartInstance.current?.options?.plugins?.tooltip?.callbacks) {
+        chartInstance.current.options.plugins.tooltip.callbacks.title = (
+          tooltipItems
+        ) => toolTips?.[tooltipItems[0].dataIndex] || ''
+      }
+      chartInstance.current.update()
+    }
 
     return () => {
       if (chartInstance.current) {
-        chartInstance.current.destroy()
+        // chartInstance.current.destroy()
       }
     }
   }, [validators, displayCount])

@@ -20,60 +20,61 @@ export default function NetworkParticipationChart() {
 
     // Destroy previous chart
     if (chartInstance.current) {
-      chartInstance.current.destroy()
+      // chartInstance.current.destroy()
     }
 
     // Create new chart
     const ctx = chartRef.current.getContext('2d')
     if (!ctx) return
 
-    chartInstance.current = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Staked SOL', 'Circulating (unstaked)', 'Non-circulating'],
-        datasets: [
-          {
-            data: [totalStaked, circulatingUnstaked, nonCirculating],
-            backgroundColor: ['#14F195', '#3F85F4', '#4A5568'],
-            borderWidth: 0,
-            borderRadius: 2,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '75%',
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            backgroundColor: '#21273A',
-            titleColor: '#E9ECEF',
-            bodyColor: '#E9ECEF',
-            borderColor: '#2D3748',
-            borderWidth: 1,
-            callbacks: {
-              label: function (context) {
-                const total = context.dataset.data.reduce(
-                  (acc: number, val: number) => acc + val,
-                  0
-                )
-                const percentage = Math.round((context.parsed * 100) / total)
-                return `${context.label}: ${context.parsed.toFixed(
-                  1
-                )}M SOL (${percentage}%)`
+    if (!chartInstance.current)
+      chartInstance.current = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Staked SOL', 'Circulating (unstaked)', 'Non-circulating'],
+          datasets: [
+            {
+              data: [totalStaked, circulatingUnstaked, nonCirculating],
+              backgroundColor: ['#14F195', '#3F85F4', '#4A5568'],
+              borderWidth: 0,
+              borderRadius: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '75%',
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              backgroundColor: '#21273A',
+              titleColor: '#E9ECEF',
+              bodyColor: '#E9ECEF',
+              borderColor: '#2D3748',
+              borderWidth: 1,
+              callbacks: {
+                label: function (context) {
+                  const total = context.dataset.data.reduce(
+                    (acc: number, val: number) => acc + val,
+                    0
+                  )
+                  const percentage = Math.round((context.parsed * 100) / total)
+                  return `${context.label}: ${context.parsed.toFixed(
+                    1
+                  )}M SOL (${percentage}%)`
+                },
               },
             },
           },
         },
-      },
-    })
+      })
 
     return () => {
       if (chartInstance.current) {
-        chartInstance.current.destroy()
+        // chartInstance.current.destroy()
       }
     }
   }, [networkInfo, stats])

@@ -18,7 +18,7 @@ export default function APYDistributionChart() {
 
     // Destroy previous chart
     if (chartInstance.current) {
-      chartInstance.current.destroy()
+      // chartInstance.current.destroy()
     }
 
     // Create new chart
@@ -39,81 +39,82 @@ export default function APYDistributionChart() {
       '#8669EB',
     ]
 
-    chartInstance.current = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Number of Validators',
-            data,
-            backgroundColor: gradientColors,
-            borderColor: 'rgba(0, 0, 0, 0)',
-            borderWidth: 0,
-            borderRadius: 4,
-            barPercentage: 0.9,
-            categoryPercentage: 0.9,
+    if (!chartInstance.current)
+      chartInstance.current = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Number of Validators',
+              data,
+              backgroundColor: gradientColors,
+              borderColor: 'rgba(0, 0, 0, 0)',
+              borderWidth: 0,
+              borderRadius: 4,
+              barPercentage: 0.9,
+              categoryPercentage: 0.9,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(255, 255, 255, 0.05)',
+              },
+              ticks: {
+                color: '#9CA3AF',
+              },
+              title: {
+                display: true,
+                text: 'Validator Count',
+                color: '#9CA3AF',
+              },
+            },
+            x: {
+              grid: {
+                display: false,
+              },
+              ticks: {
+                color: '#9CA3AF',
+              },
+              title: {
+                display: true,
+                text: 'APY Range',
+                color: '#9CA3AF',
+              },
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(255, 255, 255, 0.05)',
-            },
-            ticks: {
-              color: '#9CA3AF',
-            },
-            title: {
-              display: true,
-              text: 'Validator Count',
-              color: '#9CA3AF',
-            },
-          },
-          x: {
-            grid: {
+          plugins: {
+            legend: {
               display: false,
             },
-            ticks: {
-              color: '#9CA3AF',
-            },
-            title: {
-              display: true,
-              text: 'APY Range',
-              color: '#9CA3AF',
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            backgroundColor: '#21273A',
-            titleColor: '#E9ECEF',
-            bodyColor: '#E9ECEF',
-            borderColor: '#2D3748',
-            borderWidth: 1,
-            callbacks: {
-              title: function (tooltipItems) {
-                return `APY Range: ${tooltipItems[0].label}`
-              },
-              label: function (context) {
-                return `${context.parsed.y} Validators`
+            tooltip: {
+              backgroundColor: '#21273A',
+              titleColor: '#E9ECEF',
+              bodyColor: '#E9ECEF',
+              borderColor: '#2D3748',
+              borderWidth: 1,
+              callbacks: {
+                title: function (tooltipItems) {
+                  return `APY Range: ${tooltipItems[0].label}`
+                },
+                label: function (context) {
+                  return `${context.parsed.y} Validators`
+                },
               },
             },
           },
         },
-      },
-    })
+      })
 
     return () => {
       if (chartInstance.current) {
-        chartInstance.current.destroy()
+        // chartInstance.current.destroy()
       }
     }
   }, [validators])

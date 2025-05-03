@@ -237,7 +237,7 @@ export default function Analytics() {
 
     // Clean up previous chart
     if (distributionChartInstance.current) {
-      distributionChartInstance.current.destroy()
+      // distributionChartInstance.current.destroy()
     }
 
     // Create new chart
@@ -246,148 +246,150 @@ export default function Analytics() {
 
     // Create stake distribution chart
     if (distributionType === 'stake') {
-      distributionChartInstance.current = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: distributionData.labels.slice(0, 20),
-          datasets: [
-            {
-              label: 'Stake Amount (M SOL)',
-              data: distributionData.data.slice(0, 20),
-              backgroundColor: 'rgba(120, 70, 255, 0.8)',
-              borderColor: 'rgba(120, 70, 255, 1)',
-              borderWidth: 1,
-              borderRadius: 4,
-              barPercentage: 0.7,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              backgroundColor: 'rgba(30, 30, 45, 0.8)',
-              borderColor: 'rgba(120, 70, 255, 0.2)',
-              borderWidth: 1,
-              padding: 10,
-              callbacks: {
-                title: function (tooltipItems) {
-                  // return `Validator ${tooltipItems[0].dataIndex + 1}`
-                  return (
-                    distributionData?.toolTips?.[tooltipItems[0].dataIndex] ||
-                    ''
-                  )
-                },
-                label: function (context) {
-                  return `Stake: ${context.parsed.y.toFixed(2)}M SOL`
-                },
+      if (!distributionChartInstance.current)
+        distributionChartInstance.current = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: distributionData.labels.slice(0, 20),
+            datasets: [
+              {
+                label: 'Stake Amount (M SOL)',
+                data: distributionData.data.slice(0, 20),
+                backgroundColor: 'rgba(120, 70, 255, 0.8)',
+                borderColor: 'rgba(120, 70, 255, 1)',
+                borderWidth: 1,
+                borderRadius: 4,
+                barPercentage: 0.7,
               },
-            },
+            ],
           },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: 'rgba(255, 255, 255, 0.05)',
-              },
-              ticks: {
-                color: 'rgba(240, 240, 240, 0.7)',
-              },
-            },
-            x: {
-              grid: {
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
                 display: false,
               },
-              ticks: {
-                color: 'rgba(240, 240, 240, 0.7)',
+              tooltip: {
+                backgroundColor: 'rgba(30, 30, 45, 0.8)',
+                borderColor: 'rgba(120, 70, 255, 0.2)',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  title: function (tooltipItems) {
+                    // return `Validator ${tooltipItems[0].dataIndex + 1}`
+                    return (
+                      distributionData?.toolTips?.[tooltipItems[0].dataIndex] ||
+                      ''
+                    )
+                  },
+                  label: function (context) {
+                    return `Stake: ${context.parsed.y.toFixed(2)}M SOL`
+                  },
+                },
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.05)',
+                },
+                ticks: {
+                  color: 'rgba(240, 240, 240, 0.7)',
+                },
+              },
+              x: {
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: 'rgba(240, 240, 240, 0.7)',
+                },
               },
             },
           },
-        },
-      })
+        })
     } else {
       // Create APY distribution chart
       const apyData = calculateAPYDistribution(validators)
 
-      distributionChartInstance.current = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: apyData.labels,
-          datasets: [
-            {
-              label: 'Number of Validators',
-              data: apyData.data,
-              backgroundColor: [
-                'rgba(50, 200, 150, 0.6)',
-                'rgba(60, 190, 160, 0.6)',
-                'rgba(70, 180, 170, 0.6)',
-                'rgba(80, 170, 180, 0.6)',
-                'rgba(90, 160, 190, 0.6)',
-                'rgba(100, 150, 200, 0.6)',
-                'rgba(110, 140, 210, 0.6)',
-                'rgba(120, 130, 220, 0.6)',
-                'rgba(130, 120, 230, 0.6)',
-              ],
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-              borderWidth: 1,
-              borderRadius: 4,
-              barPercentage: 0.9,
-              categoryPercentage: 0.9,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              backgroundColor: 'rgba(30, 30, 45, 0.8)',
-              borderColor: 'rgba(120, 70, 255, 0.2)',
-              borderWidth: 1,
-              padding: 10,
-              callbacks: {
-                title: function (tooltipItems) {
-                  return `APY Range: ${tooltipItems[0].label}`
-                },
-                label: function (context) {
-                  return `${context.parsed.y} Validators`
-                },
+      if (!distributionChartInstance.current)
+        distributionChartInstance.current = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: apyData.labels,
+            datasets: [
+              {
+                label: 'Number of Validators',
+                data: apyData.data,
+                backgroundColor: [
+                  'rgba(50, 200, 150, 0.6)',
+                  'rgba(60, 190, 160, 0.6)',
+                  'rgba(70, 180, 170, 0.6)',
+                  'rgba(80, 170, 180, 0.6)',
+                  'rgba(90, 160, 190, 0.6)',
+                  'rgba(100, 150, 200, 0.6)',
+                  'rgba(110, 140, 210, 0.6)',
+                  'rgba(120, 130, 220, 0.6)',
+                  'rgba(130, 120, 230, 0.6)',
+                ],
+                borderColor: 'rgba(255, 255, 255, 0.2)',
+                borderWidth: 1,
+                borderRadius: 4,
+                barPercentage: 0.9,
+                categoryPercentage: 0.9,
               },
-            },
+            ],
           },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: 'rgba(255, 255, 255, 0.05)',
-              },
-              ticks: {
-                color: 'rgba(240, 240, 240, 0.7)',
-              },
-            },
-            x: {
-              grid: {
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
                 display: false,
               },
-              ticks: {
-                color: 'rgba(240, 240, 240, 0.7)',
+              tooltip: {
+                backgroundColor: 'rgba(30, 30, 45, 0.8)',
+                borderColor: 'rgba(120, 70, 255, 0.2)',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  title: function (tooltipItems) {
+                    return `APY Range: ${tooltipItems[0].label}`
+                  },
+                  label: function (context) {
+                    return `${context.parsed.y} Validators`
+                  },
+                },
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.05)',
+                },
+                ticks: {
+                  color: 'rgba(240, 240, 240, 0.7)',
+                },
+              },
+              x: {
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: 'rgba(240, 240, 240, 0.7)',
+                },
               },
             },
           },
-        },
-      })
+        })
     }
 
     return () => {
       if (distributionChartInstance.current) {
-        distributionChartInstance.current.destroy()
+        // distributionChartInstance.current.destroy()
       }
     }
   }, [validators, distributionType])
@@ -403,71 +405,72 @@ export default function Analytics() {
 
     // Clean up previous chart
     if (participationChartInstance.current) {
-      participationChartInstance.current.destroy()
+      // participationChartInstance.current.destroy()
     }
 
     // Create new chart
     const ctx = participationChartRef.current.getContext('2d')
     if (!ctx) return
 
-    participationChartInstance.current = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Staked SOL', 'Circulating (unstaked)', 'Non-circulating'],
-        datasets: [
-          {
-            data: [totalStaked, circulatingUnstaked, nonCirculating],
-            backgroundColor: [
-              'rgba(50, 200, 150, 0.8)',
-              'rgba(120, 70, 255, 0.8)',
-              'rgba(80, 80, 100, 0.8)',
-            ],
-            borderWidth: 2,
-            borderColor: 'rgba(30, 30, 45, 1)',
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '70%',
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              color: 'rgb(240, 240, 240)',
-              padding: 15,
-              font: {
-                family: 'system-ui, -apple-system, sans-serif',
-                size: 12,
+    if (!participationChartInstance.current)
+      participationChartInstance.current = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Staked SOL', 'Circulating (unstaked)', 'Non-circulating'],
+          datasets: [
+            {
+              data: [totalStaked, circulatingUnstaked, nonCirculating],
+              backgroundColor: [
+                'rgba(50, 200, 150, 0.8)',
+                'rgba(120, 70, 255, 0.8)',
+                'rgba(80, 80, 100, 0.8)',
+              ],
+              borderWidth: 2,
+              borderColor: 'rgba(30, 30, 45, 1)',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: 'rgb(240, 240, 240)',
+                padding: 15,
+                font: {
+                  family: 'system-ui, -apple-system, sans-serif',
+                  size: 12,
+                },
               },
             },
-          },
-          tooltip: {
-            backgroundColor: 'rgba(30, 30, 45, 0.8)',
-            borderColor: 'rgba(120, 70, 255, 0.2)',
-            borderWidth: 1,
-            padding: 10,
-            callbacks: {
-              label: function (context) {
-                const total = context.dataset.data.reduce(
-                  (acc: number, val: number) => acc + val,
-                  0
-                )
-                const percentage = Math.round((context.parsed * 100) / total)
-                return `${context.label}: ${context.parsed.toFixed(
-                  1
-                )}M SOL (${percentage}%)`
+            tooltip: {
+              backgroundColor: 'rgba(30, 30, 45, 0.8)',
+              borderColor: 'rgba(120, 70, 255, 0.2)',
+              borderWidth: 1,
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  const total = context.dataset.data.reduce(
+                    (acc: number, val: number) => acc + val,
+                    0
+                  )
+                  const percentage = Math.round((context.parsed * 100) / total)
+                  return `${context.label}: ${context.parsed.toFixed(
+                    1
+                  )}M SOL (${percentage}%)`
+                },
               },
             },
           },
         },
-      },
-    })
+      })
 
     return () => {
       if (participationChartInstance.current) {
-        participationChartInstance.current.destroy()
+        // participationChartInstance.current.destroy()
       }
     }
   }, [networkInfo, stats])

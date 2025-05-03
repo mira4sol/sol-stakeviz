@@ -21,7 +21,7 @@ Solana's public RPC endpoints are rate-limited to prevent abuse and ensure fair 
 **Server-Side Caching and Aggregation**
 
 - **Initial Approach:** The project began with a React frontend and an Express backend, using WebSockets for real-time updates. However, WebSockets generated excessive traffic, quickly hitting the RPC rate limits.
-- **Refined Approach:** The architecture was refactored to use a server (later, Next.js API routes) as a data aggregator and cache. Instead of every user querying the Solana RPC, the server fetches and caches data at controlled intervals (every 1–5 minutes), storing it in memory (and optionally in a lightweight database for persistence).
+- **Refined Approach:** The architecture was refactored to use a server (later, Next.js API routes) as a data aggregator and cache. Instead of every user querying the Solana RPC, the server fetches and caches data at controlled intervals (every 2–3 seconds), storing it in memory (and optionally in a lightweight database for persistence).
 - **Client Requests:** When a user accesses the dashboard, the frontend fetches data from the server's cache, not directly from the RPC. This dramatically reduces the number of RPC calls and ensures compliance with rate limits.
 - **Staking Trends Aggregation:** I aggregate staking history from data base by hourly and stored using supabase for easy query, so we can see the trends of validators by hourly
 - 
@@ -34,7 +34,7 @@ Solana's public RPC endpoints are rate-limited to prevent abuse and ensure fair 
 +-------------------+        +-------------------+        +-------------------+
          |                           |                              |
          |   Fetches cached data     |   Periodically fetches       |
-         |   (every 30s–1min)        |   fresh data (every 30s–1min)  |
+         |   (every 2 second)        |   fresh data (every 2 second)  |
          |-------------------------->|----------------------------->|
          |                           |                              |
          |   Receives fast,          |   Caches and aggregates      |
@@ -56,7 +56,7 @@ WebSockets are ideal for high-frequency, low-latency updates, but in the context
 The project was migrated to Next.js, leveraging its server-side API routes for data aggregation and caching. This eliminated the need for a separate Express server, simplifying deployment and maintenance.
 
 - **API Routes:** `/api/solana/validators`, `/api/solana/network`, `/api/solana/history`, etc.
-- **Caching:** Data is cached in memory with configurable refresh intervals (e.g., validators every 1 minute, network info every 5 minutes).
+- **Caching:** Data is cached in memory with configurable refresh intervals (e.g., validators every 2-3 seconds or 2-3 seconds, network info every 3 seconds).
 - **Frontend Data Fetching:** Uses `react-query` (`useQuery`) for efficient, auto-refreshing data fetching and caching on the client side.
 
 ---

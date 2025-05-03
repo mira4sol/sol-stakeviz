@@ -14,7 +14,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 export function useNetworkInfo() {
   return useQuery<NetworkInfo>({
     queryKey: ['/api/solana/network'],
-    refetchInterval: 60000, // Refetch every minute
+    refetchInterval: 2000,
   })
 }
 
@@ -24,7 +24,7 @@ export function useNetworkInfo() {
 export function useValidators() {
   return useQuery<Validator[]>({
     queryKey: ['/api/solana/validators'],
-    refetchInterval: 300000, // Refetch every 5 minutes
+    refetchInterval: 2000,
   })
 }
 
